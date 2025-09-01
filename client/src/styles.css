@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+html, body, #root { height: 100%; }
+body { @apply bg-black text-white font-museum; }
+
+.btn { @apply inline-flex items-center justify-center px-4 py-2 rounded-md transition-colors; }
+.btn-primary { @apply bg-brand-green hover:bg-brand-dark text-white; }
+
+
+
