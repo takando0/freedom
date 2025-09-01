@@ -80,7 +80,7 @@ export default function Led() {
         }
         const top = Array.from(bestByKey.values())
           .sort((a, b) => b.score - a.score)
-          .slice(0, 10)
+          .slice(0, 6)
           .map((p, idx) => ({ rank: idx + 1, ...p }));
         setGlobalTop(top);
       })
@@ -112,7 +112,7 @@ export default function Led() {
             const prev = bestByKey.get(key);
             if (!prev || score > prev.score) bestByKey.set(key, { firstName, lastName, phone, score });
           }
-          const top = Array.from(bestByKey.values()).sort((a,b)=>b.score-a.score).slice(0,10).map((p,idx)=>({ rank: idx+1, ...p }));
+          const top = Array.from(bestByKey.values()).sort((a,b)=>b.score-a.score).slice(0,6).map((p,idx)=>({ rank: idx+1, ...p }));
           setGlobalTop(top);
         })
         .catch(()=>{});
@@ -391,7 +391,7 @@ export default function Led() {
             <div className="w-full max-w-4xl">
               <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl">
                 <div className="px-6 py-4 text-center">
-                  <div className="text-2xl font-semibold">Глобальный топ‑10</div>
+                  <div className="text-2xl font-semibold">Глобальный топ‑6</div>
                 </div>
                 <div className="grid grid-cols-12 px-4 py-2 text-white/60 text-sm bg-white/5">
                   <div className="col-span-2 text-left">Место</div>
