@@ -123,10 +123,10 @@ Start-Process -WindowStyle Minimized -FilePath powershell -ArgumentList "-NoProf
 
 Write-Ok "Done! Open links (replace IP if needed):"
 if ($ip) {
-  Write-Host "  LED:     http://$ip:5173/led" -ForegroundColor Green
-  Write-Host "  Tablet:  http://$ip:5173/tablet" -ForegroundColor Green
-  Write-Host "  Admin:   http://$ip:5173/admin" -ForegroundColor Green
-  Write-Host "  LED (slides): http://$ip:5173/led?slide=eco|info|top|other" -ForegroundColor DarkGray
+  Write-Host "  LED:     http://${ip}:5173/led" -ForegroundColor Green
+  Write-Host "  Tablet:  http://${ip}:5173/tablet" -ForegroundColor Green
+  Write-Host "  Admin:   http://${ip}:5173/admin" -ForegroundColor Green
+  Write-Host "  LED (slides): http://${ip}:5173/led?slide=eco|info|top|other" -ForegroundColor DarkGray
 } else {
   Write-Host "  LED:     http://<YOUR-IP>:5173/led" -ForegroundColor Green
   Write-Host "  Tablet:  http://<YOUR-IP>:5173/tablet" -ForegroundColor Green
