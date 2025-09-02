@@ -11,21 +11,54 @@ function Write-Ok($msg) { Write-Host "[OK]   $msg" -ForegroundColor Green }
 function Write-Warn($msg) { Write-Host "[WARN] $msg" -ForegroundColor Yellow }
 function Write-Err($msg) { Write-Host "[ERR]  $msg" -ForegroundColor Red }
 
-function Ensure-Program($name, $checkCmd, $wingetId) {
+function Test-ExeAvailable($exe) {
+  try { return $null -ne (Get-Command $exe -ErrorAction SilentlyContinue) } catch { return $false }
+}
+
+function Ensure-Program($name, $exeName, $wingetId) {
   Write-Info "Checking $name..."
-  $exists = $false
-  try { & $checkCmd | Out-Null; $exists = $true } catch { $exists = $false }
-  if ($exists) { Write-Ok "$name found"; return }
+  if (Test-ExeAvailable $exeName) { Write-Ok "$name found"; return }
+
   Write-Warn "$name not found. Installing via winget ($wingetId)"
   try {
     winget install --id $wingetId -e --accept-source-agreements --accept-package-agreements --silent | Out-Null
     Start-Sleep -Seconds 3
-    & $checkCmd | Out-Null
-    Write-Ok "$name installed"
   } catch {
     Write-Err "Failed to install $name automatically. Install manually and retry."
     throw
   }
+
+  # Refresh PATH for current session and re-check
+  $env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' +
+              [System.Environment]::GetEnvironmentVariable('Path','User')
+
+  if (Test-ExeAvailable $exeName) { Write-Ok "$name installed"; return }
+
+  # Try common install locations and prepend to PATH
+  $candidates = @()
+  if ($exeName -ieq 'git') {
+    $candidates = @(
+      "$Env:ProgramFiles\Git\cmd\git.exe",
+      "$Env:ProgramFiles\Git\bin\git.exe",
+      "$Env:ProgramFiles(x86)\Git\cmd\git.exe",
+      "$Env:ProgramFiles(x86)\Git\bin\git.exe"
+    )
+  } elseif ($exeName -ieq 'node') {
+    $candidates = @(
+      "$Env:ProgramFiles\nodejs\node.exe",
+      "$Env:ProgramFiles(x86)\nodejs\node.exe"
+    )
+  }
+  $found = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+  if ($found) {
+    $dir = Split-Path $found -Parent
+    $env:Path = "$dir;" + $env:Path
+  }
+
+  if (Test-ExeAvailable $exeName) { Write-Ok "$name installed"; return }
+
+  Write-Err "$name is still not available after install. Please relaunch PowerShell and retry."
+  throw "${name}_not_available"
 }
 
 Write-Info "Checking for winget"
@@ -34,8 +67,8 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
   exit 1
 }
 
-Ensure-Program -name 'Git' -checkCmd 'git --version' -wingetId 'Git.Git'
-Ensure-Program -name 'Node.js (LTS)' -checkCmd 'node --version' -wingetId 'OpenJS.NodeJS.LTS'
+Ensure-Program -name 'Git' -exeName 'git' -wingetId 'Git.Git'
+Ensure-Program -name 'Node.js (LTS)' -exeName 'node' -wingetId 'OpenJS.NodeJS.LTS'
 
 if ($FreshInstall -and (Test-Path $InstallDir)) {
   Write-Warn "Removing existing folder $InstallDir (FreshInstall)"
