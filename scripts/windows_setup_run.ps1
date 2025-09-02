@@ -12,25 +12,25 @@ function Write-Warn($msg) { Write-Host "[WARN] $msg" -ForegroundColor Yellow }
 function Write-Err($msg) { Write-Host "[ERR]  $msg" -ForegroundColor Red }
 
 function Ensure-Program($name, $checkCmd, $wingetId) {
-  Write-Info "Проверяю $name..."
+  Write-Info "Checking $name..."
   $exists = $false
   try { & $checkCmd | Out-Null; $exists = $true } catch { $exists = $false }
-  if ($exists) { Write-Ok "$name найден"; return }
-  Write-Warn "$name не найден. Пытаюсь установить через winget ($wingetId)"
+  if ($exists) { Write-Ok "$name found"; return }
+  Write-Warn "$name not found. Installing via winget ($wingetId)"
   try {
     winget install --id $wingetId -e --accept-source-agreements --accept-package-agreements --silent | Out-Null
     Start-Sleep -Seconds 3
     & $checkCmd | Out-Null
-    Write-Ok "$name установлен"
+    Write-Ok "$name installed"
   } catch {
-    Write-Err "Не удалось установить $name автоматически. Установите вручную и повторите."
+    Write-Err "Failed to install $name automatically. Install manually and retry."
     throw
   }
 }
 
-Write-Info "Проверка наличия winget"
+Write-Info "Checking for winget"
 if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-  Write-Err "winget недоступен. Обновите Windows App Installer из Microsoft Store и повторите."
+  Write-Err "winget is unavailable. Update Windows App Installer from Microsoft Store and retry."
   exit 1
 }
 
@@ -38,7 +38,7 @@ Ensure-Program -name 'Git' -checkCmd 'git --version' -wingetId 'Git.Git'
 Ensure-Program -name 'Node.js (LTS)' -checkCmd 'node --version' -wingetId 'OpenJS.NodeJS.LTS'
 
 if ($FreshInstall -and (Test-Path $InstallDir)) {
-  Write-Warn "Удаляю существующую папку $InstallDir (FreshInstall)"
+  Write-Warn "Removing existing folder $InstallDir (FreshInstall)"
   Remove-Item -Recurse -Force $InstallDir
 }
 
@@ -46,22 +46,22 @@ if (-not (Test-Path $InstallDir)) { New-Item -ItemType Directory -Force -Path $I
 Set-Location $InstallDir
 
 if (-not (Test-Path (Join-Path $InstallDir '.git'))) {
-  Write-Info "Клонирую репозиторий $RepoUrl"
+  Write-Info "Cloning repository $RepoUrl"
   git clone $RepoUrl . | Out-Null
 } else {
-  Write-Info "Обновляю репозиторий (git pull)"
+  Write-Info "Updating repository (git pull)"
   git pull --rebase | Out-Null
 }
 
-Write-Info "Установка зависимостей сервера"
+Write-Info "Installing server dependencies"
 Set-Location (Join-Path $InstallDir 'server')
 npm ci
 
-Write-Info "Установка зависимостей клиента"
+Write-Info "Installing client dependencies"
 Set-Location (Join-Path $InstallDir 'client')
 npm ci
 
-Write-Info "Открываю правила фаервола для портов 3001 (server) и 5173 (client)"
+Write-Info "Opening firewall rules for ports 3001 (server) and 5173 (client)"
 try {
   netsh advfirewall firewall add rule name="FreedomGame_Server_3001" dir=in action=allow protocol=TCP localport=3001 | Out-Null
 } catch {}
@@ -78,28 +78,28 @@ function Get-LocalIPv4 {
 }
 
 $ip = Get-LocalIPv4
-if ($ip) { Write-Ok "Локальный IP: $ip" } else { Write-Warn "Не удалось определить локальный IPv4" }
+if ($ip) { Write-Ok "Local IP: $ip" } else { Write-Warn "Failed to detect local IPv4" }
 
-Write-Info "Запускаю сервер (порт 3001) в отдельном окне"
+Write-Info "Starting server (port 3001) in a separate window"
 Set-Location (Join-Path $InstallDir 'server')
 Start-Process -WindowStyle Minimized -FilePath powershell -ArgumentList "-NoProfile","-NoLogo","-Command","$env:PORT=3001; node src/index.js"
 
-Write-Info "Запускаю клиент Vite (порт 5173) в отдельном окне"
+Write-Info "Starting Vite client (port 5173) in a separate window"
 Set-Location (Join-Path $InstallDir 'client')
 Start-Process -WindowStyle Minimized -FilePath powershell -ArgumentList "-NoProfile","-NoLogo","-Command","npm run dev -- --host"
 
-Write-Ok "Готово! Откройте ссылки (замените при необходимости IP):"
+Write-Ok "Done! Open links (replace IP if needed):"
 if ($ip) {
   Write-Host "  LED:     http://$ip:5173/led" -ForegroundColor Green
   Write-Host "  Tablet:  http://$ip:5173/tablet" -ForegroundColor Green
   Write-Host "  Admin:   http://$ip:5173/admin" -ForegroundColor Green
-  Write-Host "  LED (слайды): http://$ip:5173/led?slide=eco|info|top|other" -ForegroundColor DarkGray
+  Write-Host "  LED (slides): http://$ip:5173/led?slide=eco|info|top|other" -ForegroundColor DarkGray
 } else {
   Write-Host "  LED:     http://<YOUR-IP>:5173/led" -ForegroundColor Green
   Write-Host "  Tablet:  http://<YOUR-IP>:5173/tablet" -ForegroundColor Green
   Write-Host "  Admin:   http://<YOUR-IP>:5173/admin" -ForegroundColor Green
 }
 
-Write-Host "Окна сервера и клиента запущены отдельно (свернуты). Закрыть — завершите соответствующие PowerShell окна." -ForegroundColor Cyan
+Write-Host "Server and client are started in separate minimized windows. Close those PowerShell windows to stop." -ForegroundColor Cyan
 
 
