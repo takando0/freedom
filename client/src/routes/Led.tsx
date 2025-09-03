@@ -21,6 +21,7 @@ export default function Led() {
   const [showOtherSlide, setShowOtherSlide] = useState<boolean>(false);
   const [slideLang, setSlideLang] = useState<'ru'|'en'>('ru');
   const bgRef = useRef<HTMLVideoElement | null>(null);
+  const stepRef = useRef<number>(0);
   useEffect(() => {
     const s: Socket = io({ transports: ['websocket'] });
     s.on('gameState', (st: any) => {
@@ -121,25 +122,21 @@ export default function Led() {
         .catch(()=>{});
     };
     fetchTop();
-    setShowWaitingTop(false);
-    setShowOtherSlide(true);
-    setSlideLang('ru');
-    setShowEcoSlide(false);
-    setShowInfoSlide(false);
+    const applyStep = (idx: number) => {
+      const mod = idx % 6;
+      setShowWaitingTop(false);
+      if (mod === 0) { setShowOtherSlide(true); setShowEcoSlide(false); setShowInfoSlide(false); setSlideLang('ru'); }
+      if (mod === 1) { setShowOtherSlide(true); setShowEcoSlide(false); setShowInfoSlide(false); setSlideLang('en'); }
+      if (mod === 2) { setShowOtherSlide(false); setShowEcoSlide(true); setShowInfoSlide(false); setSlideLang('ru'); }
+      if (mod === 3) { setShowOtherSlide(false); setShowEcoSlide(true); setShowInfoSlide(false); setSlideLang('en'); }
+      if (mod === 4) { setShowOtherSlide(false); setShowEcoSlide(false); setShowInfoSlide(true); setSlideLang('ru'); }
+      if (mod === 5) { setShowOtherSlide(false); setShowEcoSlide(false); setShowInfoSlide(true); setSlideLang('en'); }
+    };
+    stepRef.current = 0;
+    applyStep(stepRef.current);
     const cycle = setInterval(() => {
-      // каждые 5 секунд переключаем RU→EN для текущего слайда и идём к следующему
-      if (showOtherSlide) {
-        if (slideLang === 'ru') { setSlideLang('en'); }
-        else { setShowOtherSlide(false); setShowEcoSlide(true); setSlideLang('ru'); }
-      } else if (showEcoSlide) {
-        if (slideLang === 'ru') { setSlideLang('en'); }
-        else { setShowEcoSlide(false); setShowInfoSlide(true); setSlideLang('ru'); }
-      } else if (showInfoSlide) {
-        if (slideLang === 'ru') { setSlideLang('en'); }
-        else { setShowInfoSlide(false); setShowOtherSlide(true); setSlideLang('ru'); }
-      } else {
-        setShowOtherSlide(true); setSlideLang('ru');
-      }
+      stepRef.current = (stepRef.current + 1) % 6;
+      applyStep(stepRef.current);
     }, 5000);
     return () => { mounted = false; clearInterval(cycle); };
   }, [status, forcedSlide]);
@@ -253,7 +250,7 @@ export default function Led() {
         <>
           {!showWaitingTop ? (
             <>
-              {!showInfoSlide && !showEcoSlide ? (
+              {!showInfoSlide && !showEcoSlide && !showOtherSlide ? (
                 <div className="relative w-full max-w-3xl rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl overflow-hidden" style={{ animation: 'fadeSlide 260ms ease-out' }}>
                   <div className="p-8 md:p-10 text-center">
                     <img src="/logo.svg" alt="Logo" className="mx-auto h-12 md:h-16 mb-3 opacity-95" />
