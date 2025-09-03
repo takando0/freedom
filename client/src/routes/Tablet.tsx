@@ -241,7 +241,7 @@ export default function Tablet() {
                 <ul className="space-y-3 text-white/90">
                   <li className="flex items-start gap-3">
                     <span className="inline-flex items-center px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/80 text-sm shrink-0">Раунд 1</span>
-                    <span>1 балл только за правильный вариант ответа.</span>
+                    <span>За правильный ответ — 3 балла; за ближайший — 2; за второй по близости — 1; иначе — 0.</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="inline-flex items-center px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/80 text-sm shrink-0">Раунд 2</span>
