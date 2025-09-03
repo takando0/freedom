@@ -18,6 +18,8 @@ export default function Led() {
   const [showInfoSlide, setShowInfoSlide] = useState<boolean>(false);
   const [showEcoSlide, setShowEcoSlide] = useState<boolean>(false);
   const [forcedSlide, setForcedSlide] = useState<null | 'eco' | 'info' | 'top' | 'other'>(null);
+  const [showOtherSlide, setShowOtherSlide] = useState<boolean>(false);
+  const [slideLang, setSlideLang] = useState<'ru'|'en'>('ru');
   const bgRef = useRef<HTMLVideoElement | null>(null);
   useEffect(() => {
     const s: Socket = io({ transports: ['websocket'] });
@@ -92,10 +94,11 @@ export default function Led() {
     if (forcedSlide) {
       setShowWaitingTop(forcedSlide === 'top');
       setShowEcoSlide(forcedSlide === 'eco');
-      setShowInfoSlide(forcedSlide === 'info' || forcedSlide === 'other');
+      setShowInfoSlide(forcedSlide === 'info');
+      setShowOtherSlide(forcedSlide === 'other');
       return;
     }
-    if (status !== 'waiting') { setShowWaitingTop(false); setShowInfoSlide(false); setShowEcoSlide(false); return; }
+    if (status !== 'waiting') { setShowWaitingTop(false); setShowInfoSlide(false); setShowEcoSlide(false); setShowOtherSlide(false); return; }
     let mounted = true;
     const fetchTop = () => {
       fetch(`/api/global-leaderboard`)
@@ -119,17 +122,25 @@ export default function Led() {
     };
     fetchTop();
     setShowWaitingTop(false);
-    setShowInfoSlide(false);
+    setShowOtherSlide(true);
+    setSlideLang('ru');
     setShowEcoSlide(false);
+    setShowInfoSlide(false);
     const cycle = setInterval(() => {
-      // 12с таблица → 12с ЭКО → 12с инфо
-      setShowWaitingTop(true);
-      fetchTop();
-      const t1 = setTimeout(() => { setShowWaitingTop(false); setShowEcoSlide(true); }, 12000);
-      const t2 = setTimeout(() => { setShowEcoSlide(false); setShowInfoSlide(true); }, 24000);
-      const t3 = setTimeout(() => { setShowInfoSlide(false); }, 36000);
-      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-    }, 54000);
+      // каждые 5 секунд переключаем RU→EN для текущего слайда и идём к следующему
+      if (showOtherSlide) {
+        if (slideLang === 'ru') { setSlideLang('en'); }
+        else { setShowOtherSlide(false); setShowEcoSlide(true); setSlideLang('ru'); }
+      } else if (showEcoSlide) {
+        if (slideLang === 'ru') { setSlideLang('en'); }
+        else { setShowEcoSlide(false); setShowInfoSlide(true); setSlideLang('ru'); }
+      } else if (showInfoSlide) {
+        if (slideLang === 'ru') { setSlideLang('en'); }
+        else { setShowInfoSlide(false); setShowOtherSlide(true); setSlideLang('ru'); }
+      } else {
+        setShowOtherSlide(true); setSlideLang('ru');
+      }
+    }, 5000);
     return () => { mounted = false; clearInterval(cycle); };
   }, [status, forcedSlide]);
   const radius = 80;
@@ -260,28 +271,28 @@ export default function Led() {
                   </div>
                 </div>
               ) : (
-                forcedSlide === 'other' ? (
+                (forcedSlide === 'other' || showOtherSlide) ? (
                   <div className="relative w-full max-w-6xl rounded-2xl border border-white/10 bg-black/50 backdrop-blur-2xl overflow-hidden" style={{ animation: 'fadeSlide 260ms ease-out' }}>
                     <div className="p-8 md:p-10">
                       <div className="text-center">
                         <img src="/logo.svg" alt="Logo" className="mx-auto h-12 md:h-14 mb-2 opacity-95" />
-                        <div className="text-[clamp(1.8rem,4vw,2.8rem)] font-semibold tracking-tight text-white">АКЦИИ FRHC</div>
+                        <div className="text-[clamp(1.8rem,4vw,2.8rem)] font-semibold tracking-tight text-white">{slideLang==='en' ? 'FRHC STOCKS' : 'АКЦИИ FRHC'}</div>
                       </div>
                       {/* Верхний стеклянный блок с двумя строками */}
                       <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
                         <div className="px-5 py-4 flex items-center justify-between gap-4">
                           <div className="inline-flex items-center gap-3">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17.8 6.6 19.8l1-6.1L3.2 9.4l6.1-.9L12 3z" fill="#7CE0C3"/></svg>
-                            <div className="text-[clamp(1.05rem,2vw,1.35rem)] font-semibold" style={{ color:'#51AF3D' }}>Основная биржа листинга</div>
+                            <div className="text-[clamp(1.05rem,2vw,1.35rem)] font-semibold" style={{ color:'#51AF3D' }}>{slideLang==='en' ? 'Main Listing Exchange' : 'Основная биржа листинга'}</div>
                           </div>
-                          <div className="flex-1 text-center text-white/85">Нью‑Йорк, США</div>
+                          <div className="flex-1 text-center text-white/85">{slideLang==='en' ? 'New York, USA' : 'Нью‑Йорк, США'}</div>
                           <div className="shrink-0">
                             <img src="/other/Nasdaq.svg" alt="Nasdaq" className="h-8 opacity-95" />
                           </div>
                         </div>
                         <div className="border-t border-white/10 px-5 py-4 flex items-center justify-between gap-4">
                           <div className="flex items-start gap-3">
-                            <div className="text-white/90 text-[clamp(1.05rem,2.1vw,1.35rem)]">Акции также включены в официальные списки двух казахстанских бирж</div>
+                            <div className="text-white/90 text-[clamp(1.05rem,2.1vw,1.35rem)]">{slideLang==='en' ? 'The stocks are also admitted to the official lists of two Kazakhstan stock exchanges.' : 'Акции также включены в официальные списки двух казахстанских бирж'}</div>
                           </div>
                           <div className="flex items-center gap-4">
                             <img src="/other/Kase.svg" alt="KASE" className="h-8" />
@@ -294,16 +305,16 @@ export default function Led() {
                       <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-5">
                         <div className="space-y-5">
                           <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                            <div className="text-white/60 text-sm">Текущая рыночная капитализация</div>
-                            <div className="text-[clamp(1.9rem,3.2vw,2.4rem)] font-extrabold" style={{ color:'#51AF3D' }}>~11 млрд USD*</div>
+                            <div className="text-white/60 text-sm">{slideLang==='en' ? 'Current market capitalization' : 'Текущая рыночная капитализация'}</div>
+                            <div className="text-[clamp(1.9rem,3.2vw,2.4rem)] font-extrabold" style={{ color:'#51AF3D' }}>{slideLang==='en' ? '~ USD 11 billion*' : '~11 млрд USD*'}</div>
                           </div>
                           <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                            <div className="text-white/60 text-sm">Доходность с момента листинга на NASDAQ</div>
+                            <div className="text-white/60 text-sm">{slideLang==='en' ? 'Return since listing on NASDAQ' : 'Доходность с момента листинга на NASDAQ'}</div>
                             <div className="text-[clamp(1.9rem,3.2vw,2.4rem)] font-extrabold" style={{ color:'#51AF3D' }}>&gt;1100%*</div>
                           </div>
                         </div>
                         <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                          <div className="text-white/85 font-semibold mb-2">FRHC в составе индексов:</div>
+                          <div className="text-white/85 font-semibold mb-2">{slideLang==='en' ? 'FRHC is part of the following indexes:' : 'FRHC в составе индексов:'}</div>
                           <ul className="list-disc pl-5 space-y-1.5 text-white/80 text-sm">
                             <li>Russell 3000</li>
                             <li>NASDAQ Composite</li>
@@ -327,15 +338,20 @@ export default function Led() {
                     <div className="p-8 md:p-10">
                       <div className="text-center">
                         <img src="/icon.svg" alt="Icon" className="mx-auto h-12 md:h-16 mb-3 opacity-95" />
-                        <div className="text-[clamp(2rem,4.5vw,3.2rem)] font-semibold tracking-tight text-white">УНИКАЛЬНАЯ ЦИФРОВАЯ ЭКОСИСТЕМА</div>
-                        <div className="mt-3 text-[clamp(1.4rem,3vw,2rem)]" style={{ color:'#51AF3D' }}>Основные направления</div>
+                        <div className="text-[clamp(2rem,4.5vw,3.2rem)] font-semibold tracking-tight text-white">{slideLang==='en' ? 'UNIQUE DIGITAL ECOSYSTEM' : 'УНИКАЛЬНАЯ ЦИФРОВАЯ ЭКОСИСТЕМА'}</div>
+                        <div className="mt-3 text-[clamp(1.4rem,3vw,2rem)]" style={{ color:'#51AF3D' }}>{slideLang==='en' ? 'Focus Areas' : 'Основные направления'}</div>
                         <div className="mt-5 grid grid-cols-2 gap-4 max-w-4xl mx-auto">
-                          {[
+                          {(slideLang==='en' ? [
+                            {t:'Brokerage and banking services', icon:'bank'},
+                            {t:'Telecom', icon:'wifi'},
+                            {t:'Insurance', icon:'shield'},
+                            {t:'Lifestyle', icon:'heart'},
+                          ] : [
                             {t:'Брокерские и банковские услуги', icon:'bank'},
                             {t:'Телеком', icon:'wifi'},
                             {t:'Страхование', icon:'shield'},
                             {t:'Лайфстайл', icon:'heart'},
-                          ].map((it)=> (
+                          ]).map((it)=> (
                             <span key={it.t} className="inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl border border-white/10 bg-white/5 text-white/90 text-[clamp(1.15rem,2.2vw,1.45rem)] shadow-[0_0_24px_rgba(0,0,0,.28)]">
                               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 {it.icon==='bank' && (<path d="M4 9h16M6 11v7m4-7v7m4-7v7m4-7v7M3 9l9-5 9 5v1H3V9Z" stroke="#51AF3D" strokeWidth="1.9" strokeLinecap="round"/>) }
@@ -358,10 +374,23 @@ export default function Led() {
                     <div className="p-8 md:p-10 text-center">
                       <img src="/logo.svg" alt="Logo" className="h-12 mx-auto mb-3 opacity-95" />
                       <div className="text-[clamp(1.6rem,3.4vw,2.4rem)] font-semibold" style={{ color:'#51AF3D' }}>
-                        Freedom Holding Corp. <span>(FRHC)</span> — американский публичный холдинг
+                        {slideLang==='en' ? (
+                          <>Freedom Holding Corp. <span>(FRHC)</span> is an US public holding</>
+                        ) : (
+                          <>Freedom Holding Corp. <span>(FRHC)</span> — американский публичный холдинг</>
+                        )}
                       </div>
                       <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-5">
-                        {[
+                        {(slideLang==='en' ? [
+                          {k:'>11 million', t1:'Users', t2:'in the digital ecosystem', icon:'users'},
+                          {k:'>10,000', t1:'Employees', t2:'as of June 30, 2025', icon:'employees'},
+                          {k:'22', t1:'countries', t2:'USA, Europe and Central Asia as of June 30, 2025', icon:'countries'},
+                          {k:'231', t1:'offices', t2:'as of June 30, 2025', icon:'offices'},
+                          {k:'US $1.2 billion', t1:'Equity', t2:'as of June 30, 2025', icon:'equity'},
+                          {k:'US $9.7 billion', t1:'Assets', t2:'as of June 30, 2025', icon:'assets'},
+                          {k:'US $2.1 billion', t1:'Revenue', t2:'TTM as of June 30, 2025', icon:'revenue'},
+                          {k:'US $80.7 million', t1:'Net Profit', t2:'TTM as of June 30, 2025', icon:'profit'},
+                        ] : [
                           {k:'>11 млн', t1:'пользователей', t2:'в цифровой экосистеме', icon:'users'},
                           {k:'>10 000', t1:'сотрудников', t2:'на 30.06.2025', icon:'employees'},
                           {k:'22', t1:'страны', t2:'США, страны Европы и Центральной Азии на 30.06.2025', icon:'countries'},
@@ -370,7 +399,7 @@ export default function Led() {
                           {k:'US $9,7 млрд', t1:'активы', t2:'на 30.06.2025', icon:'assets'},
                           {k:'US $2,1 млрд', t1:'выручка', t2:'TTM на 30.06.2025', icon:'revenue'},
                           {k:'US $80,7 млн', t1:'чистая прибыль', t2:'TTM на 30.06.2025', icon:'profit'},
-                        ].map((it, idx) => (
+                        ]).map((it, idx) => (
                           <div key={idx} className="rounded-2xl border border-white/10 bg-white/5 p-6 text-left">
                             <div className="flex items-center gap-4">
                               <InfoIcon type={it.icon} />
@@ -381,7 +410,7 @@ export default function Led() {
                           </div>
                         ))}
                       </div>
-                      <div className="mt-7 text-white/50 text-[clamp(0.95rem,1.6vw,1.15rem)]">Все показатели приведены по состоянию на 30 июня 2025 года или за последние 12 месяцев (TTM), завершившиеся 30 июня 2025 года.</div>
+                      <div className="mt-7 text-white/50 text-[clamp(0.95rem,1.6vw,1.15rem)]">{slideLang==='en' ? 'Note: All indicators are as of June 30, 2025 or for the last 12 months (TTM) ended June 30, 2025.' : 'Все показатели приведены по состоянию на 30 июня 2025 года или за последние 12 месяцев (TTM), завершившиеся 30 июня 2025 года.'}</div>
                     </div>
                   </div>
                 )
