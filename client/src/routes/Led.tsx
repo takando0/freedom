@@ -90,7 +90,7 @@ export default function Led() {
       .catch(() => setGlobalTop([]));
   }, [status]);
 
-  // Ротация в ожидании: периодически показывать топ-10, эко-слайд и инфо-слайд
+  // Ротация в ожидании: Главный экран → Таблица → (OTHER RU → EN) → (ECO RU → EN) → (INFO RU → EN) → повтор
   useEffect(() => {
     if (forcedSlide) {
       setShowWaitingTop(forcedSlide === 'top');
@@ -100,45 +100,50 @@ export default function Led() {
       return;
     }
     if (status !== 'waiting') { setShowWaitingTop(false); setShowInfoSlide(false); setShowEcoSlide(false); setShowOtherSlide(false); return; }
-    let mounted = true;
+    let isActive = true;
+    const clearAll = () => { setShowWaitingTop(false); setShowInfoSlide(false); setShowEcoSlide(false); setShowOtherSlide(false); };
     const fetchTop = () => {
-      fetch(`/api/global-leaderboard`)
-        .then(r=>r.json())
-        .then((rows:any[]) => {
-          if (!mounted) return;
-          const bestByKey = new Map<string, { firstName: string; lastName: string; phone?: string; score: number }>();
-          for (const row of rows || []) {
-            const firstName = (row.firstName || String(row.playerName || '').split(' ')[0] || '').trim();
-            const lastName = (row.lastName || String(row.playerName || '').split(' ').slice(1).join(' ') || '').trim();
-            const phone = typeof row.phone === 'string' ? row.phone : undefined;
-            const score = Number(row.score) || 0;
-            const key = phone && /^\d{11}$/.test(phone) ? phone : `${firstName} ${lastName}`;
-            const prev = bestByKey.get(key);
-            if (!prev || score > prev.score) bestByKey.set(key, { firstName, lastName, phone, score });
-          }
-          const top = Array.from(bestByKey.values()).sort((a,b)=>b.score-a.score).slice(0,6).map((p,idx)=>({ rank: idx+1, ...p }));
-          setGlobalTop(top);
-        })
-        .catch(()=>{});
+      fetch(`/api/global-leaderboard`).then(r=>r.json()).then((rows:any[]) => {
+        if (!isActive) return;
+        const bestByKey = new Map<string, { firstName: string; lastName: string; phone?: string; score: number }>();
+        for (const row of rows || []) {
+          const firstName = (row.firstName || String(row.playerName || '').split(' ')[0] || '').trim();
+          const lastName = (row.lastName || String(row.playerName || '').split(' ').slice(1).join(' ') || '').trim();
+          const phone = typeof row.phone === 'string' ? row.phone : undefined;
+          const score = Number(row.score) || 0;
+          const key = phone && /^\d{11}$/.test(phone) ? phone : `${firstName} ${lastName}`;
+          const prev = bestByKey.get(key);
+          if (!prev || score > prev.score) bestByKey.set(key, { firstName, lastName, phone, score });
+        }
+        const top = Array.from(bestByKey.values()).sort((a,b)=>b.score-a.score).slice(0,6).map((p,idx)=>({ rank: idx+1, ...p }));
+        setGlobalTop(top);
+      }).catch(()=>{});
     };
-    fetchTop();
-    const applyStep = (idx: number) => {
-      const mod = idx % 6;
-      setShowWaitingTop(false);
-      if (mod === 0) { setShowOtherSlide(true); setShowEcoSlide(false); setShowInfoSlide(false); setSlideLang('ru'); }
-      if (mod === 1) { setShowOtherSlide(true); setShowEcoSlide(false); setShowInfoSlide(false); setSlideLang('en'); }
-      if (mod === 2) { setShowOtherSlide(false); setShowEcoSlide(true); setShowInfoSlide(false); setSlideLang('ru'); }
-      if (mod === 3) { setShowOtherSlide(false); setShowEcoSlide(true); setShowInfoSlide(false); setSlideLang('en'); }
-      if (mod === 4) { setShowOtherSlide(false); setShowEcoSlide(false); setShowInfoSlide(true); setSlideLang('ru'); }
-      if (mod === 5) { setShowOtherSlide(false); setShowEcoSlide(false); setShowInfoSlide(true); setSlideLang('en'); }
+
+    type Step = { run: () => void; ms: number };
+    const steps: Step[] = [
+      { run: () => { clearAll(); /* главный экран */ }, ms: 12000 },
+      { run: () => { clearAll(); setShowWaitingTop(true); fetchTop(); }, ms: 12000 },
+      { run: () => { clearAll(); setShowOtherSlide(true); setSlideLang('ru'); }, ms: 12000 },
+      { run: () => { clearAll(); setShowOtherSlide(true); setSlideLang('en'); }, ms: 5000 },
+      { run: () => { clearAll(); setShowEcoSlide(true); setSlideLang('ru'); }, ms: 12000 },
+      { run: () => { clearAll(); setShowEcoSlide(true); setSlideLang('en'); }, ms: 5000 },
+      { run: () => { clearAll(); setShowInfoSlide(true); setSlideLang('ru'); }, ms: 12000 },
+      { run: () => { clearAll(); setShowInfoSlide(true); setSlideLang('en'); }, ms: 5000 },
+    ];
+
+    let idx = 0;
+    let timerId: any;
+    const loop = () => {
+      if (!isActive) return;
+      steps[idx].run();
+      const wait = steps[idx].ms;
+      idx = (idx + 1) % steps.length;
+      timerId = setTimeout(loop, wait);
     };
-    stepRef.current = 0;
-    applyStep(stepRef.current);
-    const cycle = setInterval(() => {
-      stepRef.current = (stepRef.current + 1) % 6;
-      applyStep(stepRef.current);
-    }, 5000);
-    return () => { mounted = false; clearInterval(cycle); };
+
+    loop();
+    return () => { isActive = false; clearTimeout(timerId); };
   }, [status, forcedSlide]);
   const radius = 80;
   const circumference = 2 * Math.PI * radius;
