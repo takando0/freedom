@@ -329,7 +329,7 @@ export default function Led() {
                       {/* Нижний блок: реальный svg-график */}
                       <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
                         <div className="relative w-full overflow-hidden">
-                          <img src={slideLang==='en' ? '/graph-eng.svg' : '/graph.svg'} alt="FRHC graph" className="w-full h-auto" />
+                          <img src={slideLang==='en' ? '/graph-eng.svg?rev=1' : '/graph.svg?rev=1'} alt="FRHC graph" className="w-full h-auto" />
                         </div>
                       </div>
                     </div>
