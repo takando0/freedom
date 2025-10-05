@@ -639,7 +639,7 @@ export default function Led() {
                       <div className="flex items-start gap-3 text-left">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="mt-0.5 shrink-0"><path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17.8 6.6 19.8l1-6.1L3.2 9.4l6.1-.9L12 3z" fill="#FFD54A"/></svg>
                         <div>
-                          <div className="font-semibold">Топ‑10 победителей получат специальные призы в конце мероприятия.</div>
+                          <div className="font-semibold">Топ‑3 победителей получат специальные призы в конце мероприятия.</div>
                           <div className="text-white/75 text-[clamp(0.95rem,1.4vw,1.05rem)] mt-1">Мы свяжемся по указанному номеру телефона.</div>
                         </div>
                       </div>
@@ -657,17 +657,17 @@ export default function Led() {
                       </div>
                       <div className="flex items-start gap-3 text-left">
                         <img src="/Fire.svg" alt="Fire" className="mt-0.5 shrink-0 w-7 h-7" />
-                        <div className="font-medium">Загляните в фотозону: сделайте тематическое фото у ИИ‑селфи‑станции и получите кофе или чай в подарок.</div>
+                        <div className="font-medium">А еще приглашаем вас в фотозону: сделайте тематическое фото у ИИ-селфи-станции в разных стилях High Fashion на ваш выбор, а также насладитесь безалкогольным напитком от нашего партнера Bellini в подарок за ваш интерес.</div>
                       </div>
 
                       <div className="pt-4 mt-2 border-t border-white/10 text-white/75 text-[clamp(0.95rem,1.4vw,1.05rem)] text-center">
                         <div className="text-white/85 font-medium">English</div>
                         <div className="mt-2 space-y-2.5">
-                          <div><span className="font-semibold">Top 10 winners</span> (per day) will receive special prizes at the end of the event. We will contact you using your phone number.</div>
+                          <div><span className="font-semibold">Top 3 winners</span> (per day) will receive special prizes at the end of the event. We will contact you using your phone number.</div>
                           <div>Thank you for taking part in our game.</div>
                           <div>Want to dive deeper into investments? Scan the QR code to download our app.</div>
                           <div>An investment consultant is available in our zone to help you get started and answer your questions.</div>
-                          <div>Visit our photo zone: take a themed picture at the AI‑powered selfie station and enjoy complimentary coffee or tea.</div>
+                          <div>And don't miss our photo zone: take a themed High Fashion pictures at the AI-powered selfie station and enjoy a complimentary non-alcoholic drink from our partner Bellini as a token of our appreciation.</div>
                         </div>
                       </div>
                     </div>

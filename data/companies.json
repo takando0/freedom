@@ -4,123 +4,169 @@
       "id": 1,
       "name": "Freedom Holding Corp",
       "logo": "FRHC",
-      "currentPrice": 171.89,
-      "price2020": 28.71,
-      "options": [28.71, 58.30, 116.50, 232.20],
+      "currentPrice": 166,
+      "price2020": 24,
+      "options": [24, 58, 116, 232],
       "currency": "USD",
-      "growth": 498,
-      "investment1000": 5980,
+      "growth": 584,
+      "investment1000": 6840,
       "exchange": "NASDAQ",
       "round": 1,
-      "question": { "ru": "Акция компании Freedom Holding Corp сегодня стоит 171,89 USD. Как вы думаете, сколько стоила акция данной компании в сентябре 2020 года?", "en": "The share price of Freedom Holding Corp today is 171.89 USD. What do you think the share price of this company was in September 2020?" },
-      "answer": { "ru": "...", "en": "..." }
+      "question": {
+        "ru": "Акция компании Freedom Holding Corp сегодня стоит 166 USD. Как вы думаете, сколько стоила акция данной компании в октябре 2020 года?",
+        "en": "The share price of Freedom Holding Corp today is 166 USD. What do you think the share price of this company was in October 2020?"
+      },
+      "answer": {
+        "ru": "Акция компании Freedom Holding Corp 1 октября 2020 года стоила примерно 24 USD (NASDAQ: FRHC).",
+        "en": "On October 1, 2020, the share price of Freedom Holding Corp was approximately 24 USD [NASDAQ: FRHC]."
+      }
     },
     {
       "id": 2,
-      "name": "Netflix Inc.",
-      "logo": "NFLX",
-      "currentPrice": 1238.95,
-      "price2020": 498.31,
-      "options": [228.45, 697.10, 498.31, 1103.00],
-      "currency": "USD",
-      "growth": 149,
-      "investment1000": 2490,
-      "exchange": "NASDAQ",
+      "name": "LVMH Moet Hennessy Louis Vuitton SE",
+      "logo": "MC",
+      "currentPrice": 524,
+      "price2020": 410,
+      "options": [124, 410, 670, 285],
+      "currency": "EUR",
+      "growth": 28,
+      "investment1000": 1280,
+      "exchange": "EURONEXT PARIS",
       "round": 1,
-      "question": { "ru": "Акция компании Netflix Inc. сегодня стоит 1 238,95 USD. Как вы думаете, сколько стоила акция данной компании в сентябре 2020 года?", "en": "The share price of Netflix Inc. today is 1,238.95 USD. What do you think the share price of this company was in September 2020?" },
-      "answer": { "ru": "...", "en": "..." }
+      "question": {
+        "ru": "Акция компании LVMH Moet Hennessy Louis Vuitton SE сегодня стоит 524 EUR. Как вы думаете, сколько стоила акция данной компании в октябре 2020 года?",
+        "en": "The share price of LVMH Inc. today is 524 EUR. What do you think the share price of this company was in October 2020?"
+      },
+      "answer": {
+        "ru": "Акция компании LVMH 1 октября 2020 года стоила примерно 410 EUR [EURONEXT PARIS: MC].",
+        "en": "On October 1, 2020, the share price of LVMH was approximately 410 EUR [EURONEXT PARIS: MC]."
+      }
     },
     {
       "id": 3,
-      "name": "Microsoft Corporation",
-      "logo": "MSFT",
-      "currentPrice": 520.17,
-      "price2020": 215.33,
-      "options": [272.10, 215.33, 435.40, 321.80],
-      "currency": "USD",
-      "growth": 141,
-      "investment1000": 2410,
-      "exchange": "NASDAQ",
+      "name": "Hermès",
+      "logo": "RMS",
+      "currentPrice": 2088,
+      "price2020": 749,
+      "options": [1100, 2630, 470, 749],
+      "currency": "EUR",
+      "growth": 179,
+      "investment1000": 2790,
+      "exchange": "EURONEXT PARIS",
       "round": 1,
-      "question": { "ru": "Акция компании Microsoft Corporation сегодня стоит 520,17 USD. Как вы думаете, сколько стоила акция данной компании в сентябре 2020 года?", "en": "The share price of Microsoft Corporation today is 520.17 USD. What do you think the share price of this company was in September 2020?" },
-      "answer": { "ru": "...", "en": "..." }
+      "question": {
+        "ru": "Акция компании Hermès сегодня стоит 2 088 EUR. Как вы думаете, сколько стоила акция данной компании в октябре 2020 года?",
+        "en": "The share price of Hermès today is 2,088 EUR. What do you think the share price of this company was in October 2020?"
+      },
+      "answer": {
+        "ru": "Акция компании Hermès 1 октября 2020 года стоила примерно 749 EUR [EURONEXT PARIS: RMS].",
+        "en": "On October 1, 2020, the share price of Hermès was approximately 749 EUR [EURONEXT PARIS: RMS]."
+      }
     },
     {
       "id": 4,
-      "name": "Nike Inc.",
-      "logo": "NKE",
-      "currentPrice": 76.97,
-      "price2020": 118.01,
-      "options": [85.60, 118.01, 53.25, 33.90],
-      "currency": "USD",
-      "growth": -35,
-      "investment1000": 650,
-      "exchange": "NYSE",
+      "name": "Moncler",
+      "logo": "MONC",
+      "currentPrice": 50,
+      "price2020": 36,
+      "options": [36, 22, 70, 45],
+      "currency": "EUR",
+      "growth": 41,
+      "investment1000": 1410,
+      "exchange": "Euronext Milan",
       "round": 1,
-      "question": { "ru": "Акция компании Nike Inc. сегодня стоит 76,97 USD. Как вы думаете, сколько стоила акция данной компании в сентябре 2020 года?", "en": "The share price of Nike Inc. today is 76.97 USD. What do you think the share price of this company was in September 2020?" },
-      "answer": { "ru": "...", "en": "..." }
+      "question": {
+        "ru": "Акция компании Moncler сегодня стоит 50 EUR. Как вы думаете, сколько стоила акция данной компании в октябре 2020 года?",
+        "en": "The share price of Moncler today is 50 EUR. What do you think the share price of this company was in October 2020?"
+      },
+      "answer": {
+        "ru": "Акция компании Moncler 1 октября 2020 года стоила примерно 36 EUR [Euronext Milan: MONC].",
+        "en": "On October 1, 2020, the share price of Moncler was approximately 36 EUR [Euronext Milan: MONC]."
+      }
     },
     {
       "id": 5,
-      "name": "Uber Technologies Inc.",
-      "logo": "UBER",
-      "currentPrice": 92.60,
-      "price2020": 33.30,
+      "name": "Signet Jewelers LTD",
+      "logo": "SIG",
+      "currentPrice": 96,
+      "price2020": 19,
       "options": null,
       "currency": "USD",
-      "growth": 178,
-      "investment1000": 2780,
+      "growth": 401,
+      "investment1000": 5010,
       "exchange": "NYSE",
       "round": 2,
-      "question": { "ru": "Акция компании Uber Technologies Inc. сегодня стоит 92,60 USD. Как вы думаете, сколько стоила акция данной компании в сентябре 2020 года?", "en": "The share price of Uber Technologies Inc. today is 92.60 USD. What do you think the share price of this company was in September 2020?" },
-      "answer": { "ru": "...", "en": "..." }
+      "question": {
+        "ru": "Акция компании Signet Jewelers LTD сегодня стоит 96 USD. Как вы думаете, сколько стоила акция данной компании в октябре 2020 года?",
+        "en": "The share price of Signet Jewelers LTD today is 96 USD. What do you think the share price of this company was in October 2020?"
+      },
+      "answer": {
+        "ru": "Акция компании Signet Jewelers LTD 1 октября 2020 года стоила примерно 19 USD [NYSE: SIG].",
+        "en": "On October 1, 2020, the share price of Signet Jewelers LTD was approximately 19 USD [NYSE: SIG]."
+      }
     },
     {
       "id": 6,
-      "name": "Meta Platforms Inc.",
-      "logo": "META",
-      "currentPrice": 785.23,
-      "price2020": 271.39,
+      "name": "Hugo Boss AG",
+      "logo": "BOSS",
+      "currentPrice": 40,
+      "price2020": 22,
       "options": null,
-      "currency": "USD",
-      "growth": 189,
-      "investment1000": 2890,
-      "exchange": "NASDAQ",
+      "currency": "EUR",
+      "growth": 87,
+      "investment1000": 1870,
+      "exchange": "Xetra",
       "round": 2,
-      "question": { "ru": "Акция компании Meta Platforms Inc. (бывш. Facebook) сегодня стоит 785,23 USD. Как вы думаете, сколько стоила акция данной компании в сентябре 2020 года?", "en": "The share price of Meta Platforms Inc. (formerly Facebook) today is 785.23 USD. What do you think the share price of this company was in September 2020?" },
-      "answer": { "ru": "...", "en": "..." }
+      "question": {
+        "ru": "Акция компании Hugo Boss AG сегодня стоит 40 EUR. Как вы думаете, сколько стоила акция данной компании в октябре 2020 года?",
+        "en": "The share price of Hugo Boss AG today is 40 EUR. What do you think the share price of this company was in October 2020?"
+      },
+      "answer": {
+        "ru": "Акция компании Hugo Boss AG 1 октября 2020 года стоила примерно 22 EUR [Xetra: BOSS].",
+        "en": "On October 1, 2020, the share price of Hugo Boss AG was approximately 22 EUR [Xetra: BOSS]."
+      }
     },
     {
       "id": 7,
-      "name": "Nestlé S.A.",
-      "logo": "NSRGY",
-      "currentPrice": 131.45,
-      "price2020": 103.25,
+      "name": "Tapestry, Inc. (Coach)",
+      "logo": "TPR",
+      "currentPrice": 114,
+      "price2020": 16,
       "options": null,
       "currency": "USD",
-      "growth": 27,
-      "investment1000": 1270,
-      "exchange": "OTC",
+      "growth": 616,
+      "investment1000": 7160,
+      "exchange": "NYSE",
       "round": 2,
-      "question": { "ru": "Акция компании Nestlé S.A. сегодня стоит 131,45 USD. Как вы думаете, сколько стоила акция данной компании в сентябре 2020 года?", "en": "The share price of Nestlé S.A. today is 131.45 USD. What do you think the share price of this company was in September 2020?" },
-      "answer": { "ru": "...", "en": "..." }
+      "question": {
+        "ru": "Акция компании Tapestry, Inc. (Coach) сегодня стоит 114 USD. Как вы думаете, сколько стоила акция данной компании в октябре 2020 года?",
+        "en": "The share price of Tapestry, Inc. (Coach) today is 114 USD. What do you think the share price of this company was in October 2020?"
+      },
+      "answer": {
+        "ru": "Акция компании Tapestry, Inc. (Coach) 1 октября 2020 года стоила примерно 16 USD [NYSE: TPR].",
+        "en": "On October 1, 2020, the share price of Tapestry, Inc. (Coach) was approximately 16 USD [NYSE: TPR]."
+      }
     },
     {
       "id": 8,
-      "name": "Pfizer Inc.",
-      "logo": "PFE",
-      "currentPrice": 25.14,
-      "price2020": 36.35,
+      "name": "Ralph Lauren",
+      "logo": "RL",
+      "currentPrice": 317,
+      "price2020": 69,
       "options": null,
       "currency": "USD",
-      "growth": -31,
-      "investment1000": 690,
+      "growth": 359,
+      "investment1000": 4590,
       "exchange": "NYSE",
       "round": 2,
-      "question": { "ru": "Акция компании Pfizer Inc. сегодня стоит 25,14 USD. Как вы думаете, сколько стоила акция данной компании в сентябре 2020 года?", "en": "The share price of Pfizer Inc. today is 25.14 USD. What do you think the share price of this company was in September 2020?" },
-      "answer": { "ru": "...", "en": "..." }
+      "question": {
+        "ru": "Акция компании Ralph Lauren сегодня стоит 317 USD. Как вы думаете, сколько стоила акция данной компании в октябре 2020 года?",
+        "en": "The share price of Ralph Lauren today is 317 USD. What do you think the share price of this company was in October 2020?"
+      },
+      "answer": {
+        "ru": "Акция компании Ralph Lauren 1 октября 2020 года стоила примерно 69 USD [NYSE: RL].",
+        "en": "On October 1, 2020, the share price of Ralph Lauren was approximately 69 USD [NYSE: RL]."
+      }
     }
   ]
 }
-
-
