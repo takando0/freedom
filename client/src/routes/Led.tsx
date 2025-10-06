@@ -645,17 +645,6 @@ export default function Led() {
                       </div>
                       
                       <div className="flex items-start gap-3 text-left">
-                        <img src="/Chart.svg" alt="Chart" className="mt-0.5 shrink-0 w-7 h-7" />
-                        <div>
-                          <div className="font-medium">Хотите глубже погрузиться в инвестиции и заставить деньги работать?</div>
-                          <div className="text-white/75 text-[clamp(0.95rem,1.4vw,1.05rem)]">Сканируйте QR‑код и скачайте приложение.</div>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3 text-left">
-                        <img src="/Rocket.svg" alt="Rocket" className="mt-0.5 shrink-0 w-7 h-7" />
-                        <div className="font-medium">В нашей зоне вас ждёт инвестиционный консультант. Он поможет вам сделать первые шаги и ответит на вопросы.</div>
-                      </div>
-                      <div className="flex items-start gap-3 text-left">
                         <img src="/Fire.svg" alt="Fire" className="mt-0.5 shrink-0 w-7 h-7" />
                         <div className="font-medium">А еще приглашаем вас в фотозону: сделайте тематическое фото у ИИ-селфи-станции в разных стилях High Fashion на ваш выбор, а также насладитесь безалкогольным напитком от нашего партнера Bellini в подарок за ваш интерес.</div>
                       </div>
@@ -665,8 +654,6 @@ export default function Led() {
                         <div className="mt-2 space-y-2.5">
                           <div><span className="font-semibold">Top 3 winners</span> (per day) will receive special prizes at the end of the event. We will contact you using your phone number.</div>
                           <div>Thank you for taking part in our game.</div>
-                          <div>Want to dive deeper into investments? Scan the QR code to download our app.</div>
-                          <div>An investment consultant is available in our zone to help you get started and answer your questions.</div>
                           <div>And don't miss our photo zone: take a themed High Fashion pictures at the AI-powered selfie station and enjoy a complimentary non-alcoholic drink from our partner Bellini as a token of our appreciation.</div>
                         </div>
                       </div>

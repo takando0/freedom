@@ -182,3 +182,5 @@ echo -e "${YELLOW}Monitoring logs (Ctrl+C to stop)...${NC}"
 echo ""
 tail -f /tmp/freedom-server.log /tmp/freedom-client.log
 
+
+
