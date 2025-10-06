@@ -1,0 +1,30 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║        FREEDOM BROKER GAME - БЫСТРЫЙ ЗАПУСК НА WINDOWS           ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+📋 ШАГ 1: Откройте PowerShell от имени администратора
+   • Нажмите Win + X
+   • Выберите "Windows PowerShell (Admin)" или "Terminal (Admin)"
+
+🚀 ШАГ 2: Скопируйте и выполните команду:
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; irm https://raw.githubusercontent.com/takando0/freedom/main/scripts/windows_setup_run.ps1 | iex
+
+⏱️  Подождите 2-3 минуты (автоматическая установка)
+
+✅ ШАГ 3: После завершения откройте в браузере:
+   • LED экран:    http://localhost:5173/led
+   • Планшет:      http://localhost:5173/tablet  
+   • Админ панель: http://localhost:5173/admin
+
+📱 ДЛЯ ДОСТУПА С ПЛАНШЕТОВ/ТЕЛЕФОНОВ:
+   Замените localhost на IP-адрес компьютера (скрипт покажет)
+   Пример: http://192.168.1.100:5173/tablet
+
+🛑 ОСТАНОВИТЬ ПРИЛОЖЕНИЕ:
+   Закройте два окна PowerShell (они минимизированы)
+
+❓ ПРОБЛЕМЫ? Читайте SETUP_WINDOWS.md для детальной инструкции
+
+═══════════════════════════════════════════════════════════════════
+
